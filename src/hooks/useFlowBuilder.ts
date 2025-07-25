@@ -26,7 +26,10 @@ type UseFlowBuilderReturn = {
   onDragOver: (event: React.DragEvent<HTMLDivElement>) => void;
   onNodeClick: (event: React.MouseEvent, node: Node) => void;
   onPaneClick: () => void;
-  onDragStart: (event: React.DragEvent<HTMLDivElement>, nodeType: string) => void;
+  onDragStart: (
+    event: React.DragEvent<HTMLDivElement>,
+    nodeType: string
+  ) => void;
   handleSave: () => void;
   updateNodeText: (nodeId: string, newText: string) => void;
   setSelectedNode: React.Dispatch<React.SetStateAction<Node | null>>;
@@ -35,7 +38,8 @@ type UseFlowBuilderReturn = {
 const useFlowBuilder = (
   reactFlowWrapper: RefObject<HTMLDivElement | null>
 ): UseFlowBuilderReturn => {
-  const [reactFlowInstance, setReactFlowInstance] = useState<ReactFlowInstance | null>(null);
+  const [reactFlowInstance, setReactFlowInstance] =
+    useState<ReactFlowInstance | null>(null);
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [selectedNode, setSelectedNode] = useState<Node | null>(null);
@@ -109,7 +113,10 @@ const useFlowBuilder = (
     [reactFlowInstance, setNodes, reactFlowWrapper]
   );
 
-  const onDragStart = (event: React.DragEvent<HTMLDivElement>, nodeType: string) => {
+  const onDragStart = (
+    event: React.DragEvent<HTMLDivElement>,
+    nodeType: string
+  ) => {
     event.dataTransfer.setData("application/reactflow", nodeType);
     event.dataTransfer.effectAllowed = "move";
   };
@@ -118,11 +125,15 @@ const useFlowBuilder = (
     (nodeId: string, newText: string) => {
       setNodes((nds) =>
         nds.map((node) =>
-          node.id === nodeId ? { ...node, data: { ...node.data, text: newText } } : node
+          node.id === nodeId
+            ? { ...node, data: { ...node.data, text: newText } }
+            : node
         )
       );
       setSelectedNode((current) =>
-        current && current.id === nodeId ? { ...current, data: { ...current.data, text: newText } } : current
+        current && current.id === nodeId
+          ? { ...current, data: { ...current.data, text: newText } }
+          : current
       );
     },
     [setNodes]
