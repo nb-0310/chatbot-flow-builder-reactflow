@@ -10,10 +10,12 @@ import TextNode from "./TextNode";
 import NodesPanel from "./NodesPanel";
 import SettingsPanel from "./SettingsPanel";
 
-const nodeTypes = { textNode: TextNode };
+const nodeTypes = { textNode: TextNode };  // Define custom node types
 
 const FlowBuilder: React.FC = () => {
-  const reactFlowWrapper = useRef<HTMLDivElement>(null);
+
+  const reactFlowWrapper = useRef<HTMLDivElement>(null);  // Ref to track the React Flow container
+
   const {
     nodes,
     edges,
@@ -31,10 +33,11 @@ const FlowBuilder: React.FC = () => {
     handleSave,
     updateNodeText,
     setSelectedNode,
-  } = useFlowBuilder(reactFlowWrapper);
+  } = useFlowBuilder(reactFlowWrapper);  // Custom hook handling all flow logic and state
 
   return (
     <div className="w-full h-screen bg-gray-100 flex">
+      {/* Main canvas */}
       <div className="flex-1 relative">
         {showError && (
           <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-10 bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded mb-2">
@@ -69,6 +72,8 @@ const FlowBuilder: React.FC = () => {
           </ReactFlow>
         </div>
       </div>
+
+      {/* Sidebar */}
       <div className="w-80 bg-white border-l border-gray-300 flex flex-col">
         {selectedNode ? (
           <SettingsPanel

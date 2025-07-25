@@ -6,6 +6,7 @@ type SettingsPanelProps = {
   onBack: () => void;
 };
 
+// Panel to edit selected node's text
 const SettingsPanel: React.FC<SettingsPanelProps> = ({
   selectedNode,
   updateNodeText,

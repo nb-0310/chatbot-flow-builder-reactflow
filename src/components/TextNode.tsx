@@ -6,6 +6,7 @@ type TextNodeProps = {
   selected: boolean;
 };
 
+// Custom text node displayed in the flow
 const TextNode: React.FC<TextNodeProps> = ({ data, selected }) => (
   <div
     className={`bg-white rounded-lg shadow-md border-2 ${

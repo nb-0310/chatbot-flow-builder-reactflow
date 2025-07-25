@@ -38,13 +38,14 @@ type UseFlowBuilderReturn = {
 const useFlowBuilder = (
   reactFlowWrapper: RefObject<HTMLDivElement | null>
 ): UseFlowBuilderReturn => {
+  // Core states: flow instance, nodes, edges, selected node and error
   const [reactFlowInstance, setReactFlowInstance] =
     useState<ReactFlowInstance | null>(null);
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [selectedNode, setSelectedNode] = useState<Node | null>(null);
   const [showError, setShowError] = useState(false);
-  const nodeIdRef = useRef(1);
+  const nodeIdRef = useRef(1); // Counter for unique node IDs
 
   const onInit = useCallback((instance: ReactFlowInstance) => {
     setReactFlowInstance(instance);
@@ -60,7 +61,7 @@ const useFlowBuilder = (
 
   const onConnect = useCallback(
     (params: Connection) => {
-      const sourceHasEdge = edges.some((edge) => edge.source === params.source);
+      const sourceHasEdge = edges.some((edge) => edge.source === params.source); // Prevent multiple outgoing edges
       if (sourceHasEdge) return;
       setEdges((eds) =>
         addEdge(
@@ -84,7 +85,7 @@ const useFlowBuilder = (
 
   const onDragOver = useCallback((event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
-    event.dataTransfer.dropEffect = "move";
+    event.dataTransfer.dropEffect = "move"; // Show move cursor while dragging
   }, []);
 
   const onDrop = useCallback(
@@ -96,18 +97,19 @@ const useFlowBuilder = (
       const type = event.dataTransfer.getData("application/reactflow");
       if (!type) return;
 
+      // Project screen coordinates to flow canvas coordinates
       const position = reactFlowInstance.project({
         x: event.clientX - bounds.left,
         y: event.clientY - bounds.top,
       });
 
+      // Create and add new node to flow
       const newNode: Node = {
         id: `node_${nodeIdRef.current++}`,
         type: "textNode",
         position,
         data: { text: `test message ${nodeIdRef.current - 1}` },
       };
-
       setNodes((nds) => nds.concat(newNode));
     },
     [reactFlowInstance, setNodes, reactFlowWrapper]
@@ -123,6 +125,7 @@ const useFlowBuilder = (
 
   const updateNodeText = useCallback(
     (nodeId: string, newText: string) => {
+      // Update text in nodes list and also in selectedNode if it's the same node
       setNodes((nds) =>
         nds.map((node) =>
           node.id === nodeId
@@ -140,7 +143,7 @@ const useFlowBuilder = (
   );
 
   const handleSave = () => {
-    const isValid = validateFlow(nodes, edges);
+    const isValid = validateFlow(nodes, edges); // Validate before saving
     setShowError(!isValid);
     if (isValid) {
       console.log("Flow saved successfully!", { nodes, edges });

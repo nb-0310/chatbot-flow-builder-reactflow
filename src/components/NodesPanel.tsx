@@ -7,6 +7,7 @@ type NodesPanelProps = {
   ) => void;
 };
 
+// Panel to show draggable node types
 const NodesPanel: React.FC<NodesPanelProps> = ({ onDragStart }) => (
   <div className="p-4 flex-1">
     <h3 className="text-lg font-medium text-gray-900 mb-6">Nodes Panel</h3>
